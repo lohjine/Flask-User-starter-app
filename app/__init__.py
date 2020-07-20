@@ -60,6 +60,15 @@ def create_app(extra_config_settings={}):
     # Setup an error-logger to send emails to app.config.ADMINS
     init_email_error_handler(app)
 
+    # Additional persistent(not streamed) error log
+    import logging
+    from logging import Formatter, FileHandler
+    file_handler = FileHandler('logs/flask_app_error.log')
+    file_handler.setLevel(logging.ERROR)
+    file_handler.setFormatter(
+        Formatter(f'%(asctime)s %(levelname)s : %(message)s'))
+    app.logger.addHandler(file_handler)
+
     # Setup Flask-User to handle user account related forms
     from .models.user_models import User
     from .views.main_views import user_profile_page
