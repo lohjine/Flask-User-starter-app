@@ -62,8 +62,9 @@ def create_app(extra_config_settings={}):
 
     # Additional persistent(not streamed) error log
     import logging
-    from logging import Formatter, RotatingFileHandler
-    file_handler = RotatingFileHandler('logs/flask_app_error.log', maxBytes=1e7)
+    from logging import Formatter
+    from logging.handlers import WatchedFileHandler
+    file_handler = WatchedFileHandler('logs/flask_app_error.log', maxBytes=1e7)
     file_handler.setLevel(logging.ERROR)
     file_handler.setFormatter(
         Formatter(f'%(asctime)s %(levelname)s : %(message)s'))
