@@ -64,7 +64,7 @@ def create_app(extra_config_settings={}):
     import logging
     from logging import Formatter
     from logging.handlers import WatchedFileHandler
-    file_handler = WatchedFileHandler('logs/flask_app_error.log', maxBytes=1e7)
+    file_handler = WatchedFileHandler('logs/flask_app_error.log')
     file_handler.setLevel(logging.ERROR)
     file_handler.setFormatter(
         Formatter(f'%(asctime)s %(levelname)s : %(message)s'))
