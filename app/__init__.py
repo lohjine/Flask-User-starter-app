@@ -5,7 +5,6 @@ from datetime import datetime
 import os
 
 from flask import Flask
-from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_migrate import Migrate, MigrateCommand

@@ -1,23 +1,10 @@
-# This file defines command line commands for manage.py
-#
-# Copyright 2014 SolidBuilds.com. All rights reserved
-#
-# Authors: Ling Thio <ling.thio@gmail.com>
 
 import datetime
 
 from flask import current_app
-from flask_script import Command
-
+from app import create_app
 from app import db
 from app.models.user_models import User, Role
-
-class InitDbCommand(Command):
-    """ Initialize the database."""
-
-    def run(self):
-        init_db()
-        print('Database has been initialized.')
 
 def init_db():
     """ Initialize the database."""
@@ -66,6 +53,14 @@ def find_or_create_user(first_name, last_name, email, password, role=None):
             user.roles.append(role)
         db.session.add(user)
     return user
+
+if __name__ == '__main__':
+    
+    app = create_app()
+    
+    with app.app_context():
+        init_db()
+        print('db init complete')
 
 
 

@@ -60,7 +60,7 @@ See https://help.yahoo.com/kb/SLN27791.html
 ## Initializing the Database
 
     # Create DB tables and populate the roles and users tables
-    python manage.py init_db
+    python init_db.py
 
     # Or if you have Fabric installed:
     fab init_db
@@ -69,7 +69,7 @@ See https://help.yahoo.com/kb/SLN27791.html
 ## Running the app
 
     # Start the Flask development web server
-    python manage.py runserver
+    flask run
 
     # Or if you have Fabric installed:
     fab runserver
