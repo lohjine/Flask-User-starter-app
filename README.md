@@ -61,9 +61,22 @@ See https://help.yahoo.com/kb/SLN27791.html
 
     # Create DB tables and populate the roles and users tables
     python init_db.py
+	flask db init
 
     # Or if you have Fabric installed:
     fab init_db
+	
+
+## Migrating Database
+
+	# Do a backup, e.g.
+	sqlite3 app.db .backup backup_app.db
+	
+	# Creating a migration
+	flask db migrate -m "changes"
+	
+	# Check migrations/versions/*.py for correct migration generation, then
+	flask db upgrade
 
 
 ## Running the app
