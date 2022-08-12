@@ -11,6 +11,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_user import UserManager
 from flask_wtf.csrf import CSRFProtect
 
+from core import limiter
 
 # Instantiate Flask extensions
 csrf_protect = CSRFProtect()
@@ -24,6 +25,8 @@ def create_app(extra_config_settings={}):
     """
     # Instantiate Flask
     app = Flask(__name__)
+
+    limiter.init_app(app)
 
     # Load common settings
     app.config.from_object('app.settings')
