@@ -1,3 +1,9 @@
+## Changes in fork
+
+* Upgrade package versions, e.g. Flask -> 2.*
+* Upgrade bootstrap to v5
+
+
 # Flask-User starter app v1.0
 
 This code base serves as starting point for writing your next Flask application.
