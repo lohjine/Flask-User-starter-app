@@ -22,8 +22,8 @@
         {% block body %}
         <!-- Application specific HTML -->
         <div id="header-div" class="clearfix with-margins">
-            <div class="float-left"><a href="/"><h1 class="no-margins">Flask-User starter app</h1></a></div>
-            <div class="float-right">
+            <div class="float-start"><a href="/"><h1 class="no-margins">Flask-User starter app</h1></a></div>
+            <div class="float-end">
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.username or current_user.email }}</a>
                     &nbsp; | &nbsp;
@@ -60,8 +60,8 @@
         <br/>
         <hr class="no-margins"/>
         <div id="footer-div" class="clearfix with-margins">
-            <div class="float-left">{{ user_manager.app_name }} v1.0</div>
-            <div class="float-right">&copy; 2014 MyCorp</div>
+            <div class="float-start">{{ user_manager.app_name }} v1.0</div>
+            <div class="float-end">&copy; 2014 MyCorp</div>
         </div>
 
         <!-- Bootstrap JS -->
