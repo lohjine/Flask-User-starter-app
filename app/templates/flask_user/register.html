@@ -1,15 +1,15 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-{% from "flask_user/_macros.html" import render_field, render_submit_field %}
-<h1>{%trans%}Register{%endtrans%}</h1>
+{% from "common/form_macros.html" import render_field, render_submit_field %}
+<h1 class="mb-3">{%trans%}Register{%endtrans%}</h1>
 
 <form action="" method="POST" novalidate formnovalidate class="form" role="form">
     {{ form.hidden_tag() }}
 
     {# Username or Email #}
     {% set field = form.username if user_manager.USER_ENABLE_USERNAME else form.email %}
-    <div class="form-group {% if field.errors %}has-error{% endif %}">
+    <div class="container mb-3 {% if field.errors %}has-error{% endif %}">
         {# Label on left, "Already registered? Sign in." on right #}
         <div class="row">
             <div class="col">
@@ -39,7 +39,6 @@
     {% if user_manager.USER_REQUIRE_RETYPE_PASSWORD %}
         {{ render_field(form.retype_password, tabindex=240) }}
     {% endif %}
-	<br>
     {{ render_submit_field(form.submit, tabindex=280) }}
 </form>
 
