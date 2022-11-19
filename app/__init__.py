@@ -10,8 +10,12 @@ from flask_mail import Mail
 from flask_migrate import Migrate, MigrateCommand
 from flask_user import UserManager
 from flask_wtf.csrf import CSRFProtect
+from flask_sqlalchemy import SQLAlchemy
+from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
+from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
 
 from core import limiter
+
 
 # Instantiate Flask extensions
 csrf_protect = CSRFProtect()
@@ -50,6 +54,15 @@ def create_app(extra_config_settings={}):
     # Register blueprints
     from .views import register_blueprints
     register_blueprints(app)
+    
+    # Add flask dance (OAuth)    
+    if app.config['GOOGLE_OAUTH_CLIENT_ID'] and app.config['GOOGLE_OAUTH_CLIENT_SECRET']:   
+        from .oauth import google_blueprint
+        app.register_blueprint(google_blueprint, url_prefix="/login")
+    
+    if app.config['FACEBOOK_OAUTH_CLIENT_ID'] and app.config['FACEBOOK_OAUTH_CLIENT_SECRET']:   
+        from .oauth import facebook_blueprint
+        app.register_blueprint(facebook_blueprint, url_prefix="/login")
 
     # Define bootstrap_is_hidden_field for flask-bootstrap's bootstrap_wtf.html
     from wtforms.fields import HiddenField
@@ -77,7 +90,8 @@ def create_app(extra_config_settings={}):
     from .views.main_views import user_profile_page
 
     # Setup Flask-User
-    user_manager = UserManager(app, db, User)
+    from .models.user_models import UserManagerExtended
+    user_manager = UserManagerExtended(app, db, User)
 
     @app.context_processor
     def context_processor():

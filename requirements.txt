@@ -12,6 +12,7 @@ Flask-WTF==1.0.1
 Flask-User==1.0.2.2
 email_validator==1.2.1
 Flask-Limiter==2.6.2
+Flask-Dance[sqla]==6.2.0
 
 # Other important dependencies
 werkzeug==2.2.2

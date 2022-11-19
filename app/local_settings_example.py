@@ -16,6 +16,16 @@ SECRET_KEY = 'This is an UNSECURE Secret. CHANGE THIS for production environment
 SQLALCHEMY_DATABASE_URI = 'sqlite:///../app.sqlite'
 SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids a SQLAlchemy Warning
 
+# OAuth
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1' # Indicates that it's OK for Google to return different OAuth scopes than requested; Google does that sometimes.
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' # Set to 0 for production!!
+
+GOOGLE_OAUTH_CLIENT_ID = ''
+GOOGLE_OAUTH_CLIENT_SECRET = ''
+
+FACEBOOK_OAUTH_CLIENT_ID = ''
+FACEBOOK_OAUTH_CLIENT_SECRET = ''
+
 # Flask-Mail settings
 # For smtp.gmail.com to work, you MUST set "Allow less secure apps" to ON in Google Accounts.
 # Change it in https://myaccount.google.com/security#connectedapps (near the bottom).

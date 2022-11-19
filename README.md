@@ -1,8 +1,11 @@
 ## Changes in fork
 
-* Upgrade package versions, e.g. Flask -> 2.*
-* Upgrade bootstrap to v5
-
+* Upgraded package versions, e.g. Flask -> 2.*
+* Upgraded bootstrap to v5
+* Added OAuth support (google and facebook)
+* Added Flask Limiter support (see core.py)
+* Added error log to logs/ directory
+* Changed First name/Last name to be optional, since default register form does not have either field
 
 # Flask-User starter app v1.0
 

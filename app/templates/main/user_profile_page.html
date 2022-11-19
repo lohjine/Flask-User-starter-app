@@ -3,7 +3,11 @@
 {% block content %}
 <h1>User Profile</h1>
 
-<p><a href="{{ url_for('user.change_password') }}">Change password</a></p>
+<p>{% if current_user.email_confirmed_at %}
+<a href="{{ url_for('user.change_password') }}">Change password</a>
+{% else %}
+<a href="{{ url_for('user.linkemail') }}">Link an email to your account</a>
+{% endif %}</p>
 
 {% from "common/form_macros.html" import render_field, render_submit_field %}
 <form action="" method="POST" class="form" role="form">
@@ -19,5 +23,37 @@
     </div>
   </div>
 </form>
+
+<!-- Optional OAuth Google: 
+-->
+<div class="mt-4">
+  {% if current_user.oauth["google"] %}
+	You are <strong>{{ current_user.oauth["google"].provider_user_login }}</strong> on Google.
+  {% else %}	
+	  <div id="gSignInWrapper" onclick="location.href='{{ url_for("google.login") }}';">
+		<div id="googleBtn" style="width:250px">
+		  <span class="googleicon"></span>
+		  <span class="googlebuttonText">Link Google Account</span>
+		</div>
+      </div>
+  {% endif %}
+</div>
+<!-- Optional OAuth Facebook: 
+-->
+
+<div class="mt-4">
+  {% if current_user.oauth["facebook"] %}
+	You are <strong>{{ current_user.oauth["facebook"].provider_user_login }}</strong> on Facebook.
+  {% else %}	
+	  <div id="fSignInWrapper" onclick="location.href='{{ url_for("facebook.login") }}';">
+		<div id="facebookBtn" style="width:250px">
+		  <span class="facebookicon"></span>
+		  <span class="facebookbuttonText">Link Facebook Account</span>
+		</div>
+	  </div>
+  {% endif %}
+</div>
+
+
 
 {% endblock %}

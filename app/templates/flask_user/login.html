@@ -3,6 +3,26 @@
 {% block content %}
 {% from "common/form_macros.html" import render_field, render_checkbox_field, render_submit_field %}
 <h1 class="mb-3">{%trans%}Sign in{%endtrans%}</h1>
+<div class="container mb-3">
+  <div class="row">
+    <div class="col">
+	  <div id="gSignInWrapper" onclick="location.href='/login/google';">
+		<div id="googleBtn">
+		  <span class="googleicon"></span>
+		  <span class="googlebuttonText">Google Login</span>
+		</div>
+      </div>
+    </div>
+    <div class="col">
+	  <div id="fSignInWrapper" onclick="location.href='/login/facebook';">
+		<div id="facebookBtn">
+		  <span class="facebookicon"></span>
+		  <span class="facebookbuttonText">Facebook Login</span>
+		</div>
+	  </div>
+    </div>
+  </div>
+</div>
 
 <form action="" method="POST" class="form" role="form">
     {{ form.hidden_tag() }}
