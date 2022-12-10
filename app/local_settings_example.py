@@ -26,6 +26,10 @@ GOOGLE_OAUTH_CLIENT_SECRET = ''
 FACEBOOK_OAUTH_CLIENT_ID = ''
 FACEBOOK_OAUTH_CLIENT_SECRET = ''
 
+# recaptcha v2
+RECAPTCHA_PUBLIC_KEY = ''
+RECAPTCHA_PRIVATE_KEY = ''
+
 # Flask-Mail settings
 # For smtp.gmail.com to work, you MUST set "Allow less secure apps" to ON in Google Accounts.
 # Change it in https://myaccount.google.com/security#connectedapps (near the bottom).

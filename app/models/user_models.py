@@ -7,7 +7,9 @@ from flask_user import UserMixin
 from flask_login import login_user
 # from flask_user.forms import RegisterForm
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
+from flask_wtf.recaptcha import Recaptcha, RecaptchaField
+from wtforms import StringField, SubmitField, validators, ValidationError
+
 from app import db
 from flask_user import UserManager
 from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
@@ -15,6 +17,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from flask import current_app, flash, redirect, render_template, request, url_for, abort
 from flask_user import current_user, signals
+from flask_user.forms import RegisterForm
 from urllib.parse import quote, unquote    # Python 3
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
@@ -83,13 +86,14 @@ class UsersRoles(db.Model):
 
 class UserManagerExtended(UserManager):
     
-    def __init__(self, app, db, UserClass, **kwargs):
-        super().__init__(app, db, UserClass, **kwargs)
+    def customize(self, app):
+        # Configure customized forms
         
         self.USER_LINKEMAIL_TEMPLATE = 'flask_user/link_email.html'
         self.USER_AFTER_LINKEMAIL_ENDPOINT = 'main.user_profile_page'
         self.USER_LINKEMAIL_URL = '/user/link_email'
         self.LinkEmailFormClass = LinkEmailForm
+        self.RegisterFormClass = RegisterFormExtended
         
         def linkemail_stub():
             if not self.USER_ENABLE_EMAIL: abort(404)
@@ -97,7 +101,7 @@ class UserManagerExtended(UserManager):
         
         app.add_url_rule(self.USER_LINKEMAIL_URL, 'user.linkemail', linkemail_stub,
                          methods=['GET', 'POST'])
-
+        
     def linkemail_view(self):
         """ Display linkemail form to link email to User."""
 
@@ -125,7 +129,7 @@ class UserManagerExtended(UserManager):
                 try:
                     # Send 'confirm email' or 'registered' email
                     self._send_link_email(current_user, current_user, request_email_confirmation)
-                except Exception as e:
+                except Exception:
                     raise
 
             self.db_manager.commit()
@@ -208,7 +212,7 @@ class UserManagerExtended(UserManager):
         return redirect(safe_next_url)
 
 
-from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField
+from wtforms import HiddenField, PasswordField
 from flask_user.translation_utils import lazy_gettext as _    # map _() to lazy_gettext()
 from flask_user.forms import unique_email_validator, password_validator
 
@@ -234,6 +238,11 @@ class LinkEmailForm(FlaskForm):
             return False
         # All is well
         return True
+
+
+class RegisterFormExtended(RegisterForm):
+    recaptcha = RecaptchaField(validators=[
+        Recaptcha(message="Please fill in the captcha")])
 
 # Define the User profile form
 class UserProfileForm(FlaskForm):

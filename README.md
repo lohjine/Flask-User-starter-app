@@ -6,6 +6,7 @@
 * Added Flask Limiter support (see core.py)
 * Added error log to logs/ directory
 * Changed First name/Last name to be optional, since default register form does not have either field
+* Added recaptcha v2 support
 
 # Flask-User starter app v1.0
 
