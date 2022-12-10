@@ -3,8 +3,10 @@
 {% block content %}
 {% from "common/form_macros.html" import render_field, render_checkbox_field, render_submit_field %}
 <h1 class="mb-3">{%trans%}Sign in{%endtrans%}</h1>
+{% if user_manager.app.config['GOOGLE_OAUTH_CLIENT_ID'] or user_manager.app.config['FACEBOOK_OAUTH_CLIENT_ID'] %}
 <div class="container mb-3">
   <div class="row">
+    {% if user_manager.app.config['GOOGLE_OAUTH_CLIENT_ID'] %}
     <div class="col">
 	  <div id="gSignInWrapper" onclick="location.href='/login/google';">
 		<div id="googleBtn">
@@ -13,6 +15,8 @@
 		</div>
       </div>
     </div>
+    {% endif %}
+    {% if user_manager.app.config['FACEBOOK_OAUTH_CLIENT_ID'] %}
     <div class="col">
 	  <div id="fSignInWrapper" onclick="location.href='/login/facebook';">
 		<div id="facebookBtn">
@@ -21,8 +25,10 @@
 		</div>
 	  </div>
     </div>
+    {% endif %}
   </div>
 </div>
+{% endif %}
 
 <form action="" method="POST" class="form" role="form">
     {{ form.hidden_tag() }}

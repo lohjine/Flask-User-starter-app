@@ -26,6 +26,7 @@
 
 <!-- Optional OAuth Google: 
 -->
+{% if user_manager.app.config['GOOGLE_OAUTH_CLIENT_ID'] %}
 <div class="mt-4">
   {% if current_user.oauth["google"] %}
 	You are <strong>{{ current_user.oauth["google"].provider_user_login }}</strong> on Google.
@@ -38,9 +39,11 @@
       </div>
   {% endif %}
 </div>
+{% endif %}
 <!-- Optional OAuth Facebook: 
 -->
 
+{% if user_manager.app.config['FACEBOOK_OAUTH_CLIENT_ID'] %}
 <div class="mt-4">
   {% if current_user.oauth["facebook"] %}
 	You are <strong>{{ current_user.oauth["facebook"].provider_user_login }}</strong> on Facebook.
@@ -53,6 +56,7 @@
 	  </div>
   {% endif %}
 </div>
+{% endif %}
 
 
 
