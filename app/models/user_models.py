@@ -102,6 +102,36 @@ class UserManagerExtended(UserManager):
         app.add_url_rule(self.USER_LINKEMAIL_URL, 'user.linkemail', linkemail_stub,
                          methods=['GET', 'POST'])
         
+    
+    def password_validator(self, form, field):
+        """Ensure that passwords have at least 8 characters that is not all lowercase/uppercase/number
+        unless password length is 15 then no other restrictions.
+
+        Override the default password validator which is at least 6 characters with one lowercase letter, one uppercase letter and one number.
+        """
+
+        # Convert string to list of characters
+        password = list(field.data)
+        password_length = len(password)
+
+        # Count lowercase, uppercase and numbers
+        lowers = uppers = digits = 0
+        for ch in password:
+            if ch.islower(): lowers += 1
+            if ch.isupper(): uppers += 1
+            if ch.isdigit(): digits += 1
+
+        # Password must have one lowercase letter, one uppercase letter and one digit
+        if password_length >= 15:
+            is_valid = True
+        elif password_length >= 8 and ((lowers and uppers) or (lowers and digits) or (uppers and digits)):
+            is_valid = True
+        else:
+            is_valid = False
+        if not is_valid:
+            raise ValidationError(
+                _('Password must have at least 8 characters, not just all lowercase letters'))
+        
     def linkemail_view(self):
         """ Display linkemail form to link email to User."""
 
