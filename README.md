@@ -1,8 +1,8 @@
 ## Changes in fork
 
-* Upgraded package versions, e.g. Flask -> 2.*
+* Upgraded package versions, e.g. Flask -> 3.*
 * Upgraded bootstrap to v5
-* Added OAuth support (google and facebook)
+* Added OAuth support (google, facebook)
 * Added Flask Limiter support (see core.py)
 * Added error log to logs/ directory
 * Changed First name/Last name to be optional, since default register form does not have either field
@@ -14,11 +14,8 @@ This code base serves as starting point for writing your next Flask application.
 
 This branch is for Flask-User v1.0.
 
-For Flask-User v0.6, see [the Flask-User-Starter-App v0.6 branch](https://github.com/lingthio/Flask-User-starter-app/tree/v0.6).
-
 ## Code characteristics
 
-* Tested on Python 2.6, 2.7, 3.3, 3.4, 3.5 and 3.6
 * Well organized directories with lots of comments
     * app
         * commands
@@ -27,26 +24,22 @@ For Flask-User v0.6, see [the Flask-User-Starter-App v0.6 branch](https://github
         * templates
         * views
     * tests
-* Includes test framework (`py.test` and `tox`)
 * Includes database migration framework (`alembic`)
 * Sends error emails to admins for unhandled exceptions
 
-
 ## Setting up a development environment
 
-We assume that you have `git` and `virtualenv` and `virtualenvwrapper` installed.
+We assume that you have `git` and `virtualenv` installed.
 
-    # Clone the code repository into ~/dev/my_app
-    mkdir -p ~/dev
-    cd ~/dev
-    git clone https://github.com/lingthio/Flask-User-starter-app.git my_app
+    # Clone the code repository
+    git clone https://github.com/lohjine/Flask-User-starter-app.git
+	cd Flask-User-starter-app
 
-    # Create the 'my_app' virtual environment
-    mkvirtualenv -p PATH/TO/PYTHON my_app
+    # Create virtual environment
+    python3 -m virtualenv venv
+	source venv/bin/activate
 
     # Install required Python packages
-    cd ~/dev/my_app
-    workon my_app
     pip install -r requirements.txt
 
 
@@ -70,12 +63,9 @@ See https://help.yahoo.com/kb/SLN27791.html
 ## Initializing the Database
 
     # Create DB tables and populate the roles and users tables
-    python init_db.py
-	flask db init
+    python init_db.py # Creates all tables from scratch
+	flask db init # Creates migration infrastructure
 
-    # Or if you have Fabric installed:
-    fab init_db
-	
 
 ## Migrating Database
 
@@ -92,10 +82,7 @@ See https://help.yahoo.com/kb/SLN27791.html
 ## Running the app
 
     # Start the Flask development web server
-    flask run
-
-    # Or if you have Fabric installed:
-    fab runserver
+    flask run -h 0.0.0.0 -p 5000
 
 Point your web browser to http://localhost:5000/
 
@@ -108,9 +95,6 @@ You can make use of the following users:
 
     # Start the Flask development web server
     py.test tests/
-
-    # Or if you have Fabric installed:
-    fab test
 
 
 ## Trouble shooting

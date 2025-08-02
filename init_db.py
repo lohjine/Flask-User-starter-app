@@ -2,6 +2,7 @@
 import datetime
 
 from flask import current_app
+import core  # Import core to apply monkey patch
 from app import create_app
 from app import db
 from app.models.user_models import User, Role
