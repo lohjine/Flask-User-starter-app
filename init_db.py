@@ -1,5 +1,5 @@
 
-import datetime
+from datetime import UTC, datetime
 
 from flask import current_app
 import core  # Import core to apply monkey patch
@@ -49,7 +49,7 @@ def find_or_create_user(first_name, last_name, email, password, role=None):
                     last_name=last_name,
                     password=current_app.user_manager.password_manager.hash_password(password),
                     active=True,
-                    email_confirmed_at=datetime.datetime.utcnow())
+                    email_confirmed_at=datetime.now(UTC).replace(tzinfo=None))
         if role:
             user.roles.append(role)
         db.session.add(user)
