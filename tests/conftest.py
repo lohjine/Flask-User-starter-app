@@ -6,14 +6,22 @@
 #
 # Authors: Ling Thio <ling.thio@gmail.com>
 
-import sys
 from pathlib import Path
 
 import pytest
 
 workspace_root = Path(__file__).resolve().parents[2]
 library_root = workspace_root / 'Flask-User'
-sys.path.insert(0, str(library_root))
+
+import flask_user
+
+flask_user_path = Path(flask_user.__file__).resolve()
+if library_root.resolve() not in flask_user_path.parents:
+    raise RuntimeError(
+        'Tests must run against the sibling Flask-User source. '
+        f'Expected {library_root}, got {flask_user_path}. '
+        'Run "python -m pip install -r requirements.txt" from Flask-User-starter-app/.'
+    )
 
 from app import create_app, db as the_db
 

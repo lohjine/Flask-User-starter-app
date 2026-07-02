@@ -42,6 +42,10 @@ We assume that you have `git` and `virtualenv` installed.
     # Install required Python packages
     pip install -r requirements.txt
 
+The requirements install the sibling `../Flask-User` library in editable mode.
+This keeps the starter app and local Flask-User source synchronized during
+development.
+
 
 # Configuring SMTP
 
@@ -87,14 +91,13 @@ See https://help.yahoo.com/kb/SLN27791.html
 Point your web browser to http://localhost:5000/
 
 You can make use of the following users:
-- email `user@example.com` with password `Password1`.
+- email `member@example.com` with password `Password1`.
 - email `admin@example.com` with password `Password1`.
 
 
 ## Running the automated tests
 
-    # Start the Flask development web server
-    py.test tests/
+    python -m pytest tests -q
 
 
 ## Trouble shooting
