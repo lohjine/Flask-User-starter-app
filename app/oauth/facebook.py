@@ -7,6 +7,7 @@ from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
 from sqlalchemy.orm.exc import NoResultFound
 from app import db
 from app.models.user_models import User, OAuth
+from app.oauth.utils import pop_safe_next_url
 from flask import redirect, url_for
 import json
 
@@ -58,12 +59,7 @@ def facebook_logged_in(blueprint, token):
             # log the user into the linked user account
             login_user(oauth.user)
             flash("Successfully signed in with Facebook.", "success")
-            # retrieve `next_url` from Flask's session cookie
-            next_url = flask.session.get("next_url","/")
-            if next_url != "/":
-                flask.session.pop("next_url")
-            # redirect the user to `next_url`
-            return flask.redirect(next_url)
+            return flask.redirect(pop_safe_next_url())
         else:
             # If the user is not logged in and the token is unlinked,
             # create a new local user account and log that account in.
@@ -75,12 +71,7 @@ def facebook_logged_in(blueprint, token):
             db.session.commit()
             login_user(user)
             flash("Successfully signed in with Facebook.", "success")
-            # retrieve `next_url` from Flask's session cookie
-            next_url = flask.session.get("next_url","/")
-            if next_url != "/":
-                flask.session.pop("next_url")
-            # redirect the user to `next_url`
-            return flask.redirect(next_url)
+            return flask.redirect(pop_safe_next_url())
     else:
         if oauth.user:
             # If the user is logged in and the token is linked, check if these
