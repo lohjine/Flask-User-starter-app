@@ -6,3 +6,4 @@ placeholder and rationale.
 
 from .google import blueprint as google_blueprint
 from .facebook import blueprint as facebook_blueprint
+from .utils import SUPPORTED_PROVIDERS

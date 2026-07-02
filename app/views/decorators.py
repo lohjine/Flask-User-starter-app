@@ -8,6 +8,7 @@ such as @login_required, @roles_accepted and @roles_required and @confirmed_emai
 from functools import wraps
 from flask import current_app, g
 from flask_login import current_user
+from app.oauth.utils import SUPPORTED_PROVIDERS
 
 def _is_logged_in_with_confirmed_email_or_oauth(user_manager):
     """| Returns True if user is logged in and has a confirmed email address.
@@ -20,16 +21,16 @@ def _is_logged_in_with_confirmed_email_or_oauth(user_manager):
             getattr(g, '_flask_user_allow_unconfirmed_email', False)
         
         # unconfirmed_email_allowed must be True or
-        # User must have at least one confirmed email address, or one of the oauth
-        google_oauth = False
-        facebook_oauth = False
-        if 'google' in current_user.oauth:
-            google_oauth = True
+        has_supported_oauth = any(
+            provider in current_user.oauth
+            for provider in SUPPORTED_PROVIDERS
+        )
 
-        if 'facebook' in current_user.oauth:
-            facebook_oauth = True
-        
-        if unconfirmed_email_allowed or user_manager.db_manager.user_has_confirmed_email(current_user) or google_oauth or facebook_oauth:
+        if (
+            unconfirmed_email_allowed
+            or user_manager.db_manager.user_has_confirmed_email(current_user)
+            or has_supported_oauth
+        ):
             return True
 
     return False

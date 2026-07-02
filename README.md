@@ -105,6 +105,18 @@ You can make use of the following users:
     python -m pytest tests -q
 
 
+## OAuth support
+
+This starter app supports Google and Facebook OAuth through Flask-Dance when
+the matching client ID and client secret are configured in `app/local_settings.py`.
+OAuth-created users may start without an email address or password; they can
+add email/password login later from the profile page.
+
+GitHub OAuth is intentionally unsupported in this starter app. The placeholder
+module remains unavailable until it is redesigned against the current `User`
+and `OAuth` models.
+
+
 ## Trouble shooting
 
 If you make changes in the Models and run into DB schema issues, delete the sqlite DB file `app.sqlite`.
