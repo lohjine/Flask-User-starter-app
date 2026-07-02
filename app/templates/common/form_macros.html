@@ -1,42 +1,49 @@
 {% macro render_field(field, label=None, label_visible=true, right_url=None, right_label=None) -%}
-    <div class="container mb-3 {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
+    {% set extra_class = kwargs.pop('class_', '') %}
+    {% set input_class = ('form-control ' ~ extra_class ~ (' is-invalid' if field.errors else ''))|trim %}
+    <div class="mb-3">
         {% if field.type != 'HiddenField' and label_visible %}
             {% if not label %}{% set label=field.label.text %}{% endif %}
-            <label for="{{ field.id }}" class="control-label">{{ label|safe }}</label>
+            <div class="d-flex justify-content-between gap-3 mb-1">
+                <label for="{{ field.id }}" class="form-label mb-0">{{ label|safe }}</label>
+                {% if right_url and right_label %}
+                    <a href="{{ right_url }}">{{ right_label|safe }}</a>
+                {% endif %}
+            </div>
         {% endif %}
-        {{ field(class_='form-control', **kwargs) }}
+        {{ field(class_=input_class, **kwargs) }}
         {% if field.errors %}
             {% for e in field.errors %}
-                <p class="help-block">{{ e }}</p>
+                <div class="invalid-feedback d-block">{{ e }}</div>
             {% endfor %}
         {% endif %}
     </div>
 {%- endmacro %}
- 
+
 {% macro render_checkbox_field(field, label=None) -%}
     {% if not label %}{% set label=field.label.text %}{% endif %}
-    <div class="checkbox mb-2">
-        <label>
-            {{ field(type='checkbox', **kwargs) }} {{ label }}
-        </label>
+    <div class="form-check mb-2">
+        {{ field(type='checkbox', class_='form-check-input', **kwargs) }}
+        <label class="form-check-label" for="{{ field.id }}">{{ label }}</label>
+        {% if field.errors %}
+            {% for e in field.errors %}
+                <div class="invalid-feedback d-block">{{ e }}</div>
+            {% endfor %}
+        {% endif %}
     </div>
 {%- endmacro %}
- 
+
 {% macro render_radio_field(field) -%}
     {% for value, label, checked in field.iter_choices() %}
-        <div class="radio">
-            <label>
-                <input type="radio" name="{{ field.id }}" id="{{ field.id }}" value="{{ value }}"{% if checked %} checked{% endif %}>
-                {{ label }}
-            </label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="{{ field.id }}" id="{{ field.id }}-{{ loop.index }}" value="{{ value }}"{% if checked %} checked{% endif %}>
+            <label class="form-check-label" for="{{ field.id }}-{{ loop.index }}">{{ label }}</label>
         </div>
     {% endfor %}
 {%- endmacro %}
 
 {% macro render_submit_field(field, label=None, tabindex=None) -%}
     {% if not label %}{% set label=field.label.text %}{% endif %}
-    {#<button type="submit" class="form-control btn btn-default btn-primary">{{label}}</button>#}
-    <input type="submit" class="btn btn-default btn-primary" value="{{label}}"
-           {% if tabindex %}tabindex="{{ tabindex }}"{% endif %}
-           >
+    <input type="submit" class="btn btn-primary" value="{{ label }}"
+           {% if tabindex %}tabindex="{{ tabindex }}"{% endif %}>
 {%- endmacro %}
