@@ -119,3 +119,4 @@ app.sqlite
 app/local_settings.py
 
 TODO.txt
+.claude/settings.local.json
