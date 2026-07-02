@@ -16,8 +16,9 @@ Flask-Dance[sqla]==7.1.0
 
 # Other important dependencies
 werkzeug==3.0.6
+bcrypt>=4,<5
 
 # Automated tests
-pytest==3.0.5
-pytest-cov==2.4.0
+pytest>=8.4,<9
+pytest-cov>=6.2,<7
 
