@@ -120,3 +120,5 @@ app/local_settings.py
 
 TODO.txt
 .claude/settings.local.json
+/flask-user_source
+/.codex
