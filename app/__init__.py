@@ -62,6 +62,10 @@ def create_app(extra_config_settings=None):
         from .oauth import facebook_blueprint
         app.register_blueprint(facebook_blueprint, url_prefix="/login")
 
+    if app.config['STEAM_OPENID_ENABLED']:
+        from .oauth import steam_blueprint
+        app.register_blueprint(steam_blueprint, url_prefix="/login")
+
     # Define bootstrap_is_hidden_field for flask-bootstrap's bootstrap_wtf.html
     from wtforms.fields import HiddenField
 
@@ -92,7 +96,12 @@ def create_app(extra_config_settings=None):
 
     @app.context_processor
     def context_processor():
-        return dict(user_manager=user_manager)
+        from .oauth.utils import OAUTH_PROVIDER_LABELS, SUPPORTED_PROVIDERS
+        return dict(
+            user_manager=user_manager,
+            oauth_provider_labels=OAUTH_PROVIDER_LABELS,
+            supported_oauth_providers=SUPPORTED_PROVIDERS,
+        )
 
     return app
 

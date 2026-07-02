@@ -1,8 +1,8 @@
 ## Changes in fork
 
 * Upgraded package versions, e.g. Flask -> 3.*
-* Upgraded bootstrap to v5
-* Added OAuth support (google, facebook)
+* Upgraded Bootstrap to v5
+* Added OAuth/OpenID support (Google, Facebook, Steam)
 * Added Flask Limiter support (see core.py)
 * Added error log to logs/ directory
 * Changed First name/Last name to be optional, since default register form does not have either field
@@ -29,51 +29,55 @@ This branch is for Flask-User v1.0.
 
 ## Setting up a development environment
 
-We assume that you have `git` and `virtualenv` installed.
+This checkout is expected to live beside the sibling `Flask-User/` library
+source:
+
+    parent/
+      Flask-User/
+      Flask-User-starter-app/
 
     # Clone the code repository
     git clone https://github.com/lohjine/Flask-User-starter-app.git
 	cd Flask-User-starter-app
 
     # Create virtual environment
-    python3 -m virtualenv venv
-	source venv/bin/activate
+    python -m venv .venv
+    .venv\Scripts\Activate.ps1
 
     # Install required Python packages
-    pip install -r requirements.txt
+    python -m pip install -r requirements.txt
 
 The requirements install the sibling `../Flask-User` library in editable mode.
 This keeps the starter app and local Flask-User source synchronized during
 development.
 
 
-# Configuring SMTP
+## Configuring local settings
 
 Copy the `local_settings_example.py` file to `local_settings.py`.
 
     cp app/local_settings_example.py app/local_settings.py
 
-Edit the `local_settings.py` file.
-
-Specifically set all the MAIL_... settings to match your SMTP settings
+Edit the `local_settings.py` file for your database, mail server, OAuth/OpenID
+providers, Recaptcha keys, and production safety settings.
 
 Set `SECRET_KEY` to a unique production secret with at least 32 bytes of text.
 For example:
 
     python -c "import secrets; print(secrets.token_urlsafe(48))"
 
-Note that Google's SMTP server requires the configuration of "less secure apps".
-See https://support.google.com/accounts/answer/6010255?hl=en
-
-Note that Yahoo's SMTP server requires the configuration of "Allow apps that use less secure sign in".
-See https://help.yahoo.com/kb/SLN27791.html
+For production, also configure persistent rate-limit storage with
+`RATELIMIT_STORAGE_URI`, set `OAUTHLIB_INSECURE_TRANSPORT = '0'`, and use SMTP
+credentials intended for application mail instead of a personal password.
 
 
 ## Initializing the Database
 
     # Create DB tables and populate the roles and users tables
-    python init_db.py # Creates all tables from scratch
-	flask db init # Creates migration infrastructure
+    python init_db.py
+
+    # Optional: create migration infrastructure for an app you are developing
+    flask db init
 
 
 ## Migrating Database
@@ -91,7 +95,7 @@ See https://help.yahoo.com/kb/SLN27791.html
 ## Running the app
 
     # Start the Flask development web server
-    flask run -h 0.0.0.0 -p 5000
+    flask --app flask_app.py run -h 0.0.0.0 -p 5000
 
 Point your web browser to http://localhost:5000/
 
@@ -105,12 +109,17 @@ You can make use of the following users:
     python -m pytest tests -q
 
 
-## OAuth support
+## OAuth and Steam support
 
 This starter app supports Google and Facebook OAuth through Flask-Dance when
 the matching client ID and client secret are configured in `app/local_settings.py`.
-OAuth-created users may start without an email address or password; they can
-add email/password login later from the profile page.
+It also supports Steam sign-in through Steam OpenID. Steam login does not
+require OAuth client credentials; set `STEAM_OPENID_ENABLED = False` to disable
+it. `STEAM_API_KEY` is optional and is only used to fetch a Steam display name
+for the linked account.
+
+OAuth/OpenID-created users may start without an email address or password; they
+can add email/password login later from the profile page.
 
 GitHub OAuth is intentionally unsupported in this starter app. The placeholder
 module remains unavailable until it is redesigned against the current `User`

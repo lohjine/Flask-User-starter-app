@@ -25,7 +25,13 @@
             <div class="float-start"><a href="/"><h1 class="no-margins">Flask-User starter app</h1></a></div>
             <div class="float-end">
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.last_name or (current_user.email if current_user.email_confirmed_at) or current_user.oauth.google.provider_user_login  or current_user.oauth.facebook.provider_user_login }}</a>
+                    {% set oauth_login = namespace(value='') %}
+                    {% for provider in supported_oauth_providers %}
+                        {% if not oauth_login.value and current_user.oauth.get(provider) %}
+                            {% set oauth_login.value = current_user.oauth.get(provider).provider_user_login %}
+                        {% endif %}
+                    {% endfor %}
+                    <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.last_name or (current_user.email if current_user.email_confirmed_at) or oauth_login.value }}</a>
                     &nbsp; | &nbsp;
                     <a href="{{ url_for('user.logout') }}">Sign out</a>
                 {% else %}

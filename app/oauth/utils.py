@@ -8,7 +8,13 @@ from sqlalchemy.orm.exc import NoResultFound
 from app import db
 from app.models.user_models import OAuth, User
 
-SUPPORTED_PROVIDERS = ('google', 'facebook')
+OAUTH_PROVIDER_LABELS = {
+    'google': 'Google',
+    'facebook': 'Facebook',
+    'steam': 'Steam',
+}
+
+SUPPORTED_PROVIDERS = tuple(OAUTH_PROVIDER_LABELS)
 
 
 def pop_safe_next_url(default='/'):

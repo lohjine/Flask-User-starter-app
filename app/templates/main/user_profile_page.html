@@ -58,6 +58,19 @@
 </div>
 {% endif %}
 
+{% if user_manager.app.config['STEAM_OPENID_ENABLED'] %}
+<div class="mt-4">
+  {% if current_user.oauth["steam"] %}
+    You are <strong>{{ current_user.oauth["steam"].provider_user_login }}</strong> on Steam.
+  {% else %}
+    <div id="steamSignInWrapper" onclick="location.href='{{ url_for("steam.login") }}';">
+      <div class="steamBtn" style="width:250px">
+        <span class="steambuttonText">Link Steam Account</span>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endif %}
 
 
 {% endblock %}

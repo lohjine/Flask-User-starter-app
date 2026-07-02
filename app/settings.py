@@ -28,3 +28,8 @@ USER_ENABLE_USERNAME = False  # Register and Login with username
 USER_AFTER_LOGIN_ENDPOINT = 'main.member_page'
 USER_AFTER_LOGOUT_ENDPOINT = 'main.home_page'
 
+# Steam sign-in uses OpenID 2.0 and does not require OAuth client credentials.
+# STEAM_API_KEY is optional and only used to fetch a display name.
+STEAM_OPENID_ENABLED = True
+STEAM_API_KEY = os.getenv('STEAM_API_KEY', '')
+

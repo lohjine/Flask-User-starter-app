@@ -81,3 +81,28 @@ span.facebookbuttonText {
   font-weight: bold;
   font-family: 'Helvetica', sans-serif;
     }
+
+/* For Steam button */
+
+.steamBtn {
+  display: inline-block;
+  background: #171a21;
+  color: white;
+  width: 190px;
+  border-radius: 5px;
+  border: thin solid #333;
+  box-shadow: 1px 1px 1px grey;
+  white-space: nowrap;
+}
+.steamBtn:hover {
+  cursor: pointer;
+}
+span.steambuttonText {
+  display: inline-block;
+  color: white;
+  vertical-align: middle;
+  padding: 12px 42px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+}
