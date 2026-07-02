@@ -7,9 +7,10 @@ import os
 # DO NOT use "DEBUG = True" in production environments
 DEBUG = True
 
-# DO NOT use Unsecure Secrets in production environments
+# DO NOT use unsecure secrets in production environments.
 # Generate a safe one with:
-#     python -c "import os; print repr(os.urandom(24));"
+#     python -c "import secrets; print(secrets.token_urlsafe(48))"
+# Flask-User token encryption requires at least 32 bytes of SECRET_KEY text.
 SECRET_KEY = 'This is an UNSECURE Secret. CHANGE THIS for production environments.'
 
 # SQLAlchemy settings

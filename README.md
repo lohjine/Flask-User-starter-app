@@ -57,6 +57,11 @@ Edit the `local_settings.py` file.
 
 Specifically set all the MAIL_... settings to match your SMTP settings
 
+Set `SECRET_KEY` to a unique production secret with at least 32 bytes of text.
+For example:
+
+    python -c "import secrets; print(secrets.token_urlsafe(48))"
+
 Note that Google's SMTP server requires the configuration of "less secure apps".
 See https://support.google.com/accounts/answer/6010255?hl=en
 
