@@ -7,6 +7,17 @@
 <form action="" method="POST" novalidate formnovalidate class="form" role="form">
     {{ form.hidden_tag() }}
 
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% trans %}Registration failed. Please fix the following:{% endtrans %}
+            <ul class="mb-0">
+            {% for field_name, errors in form.errors.items() %}{% for e in errors %}
+                <li>{{ e }}</li>
+            {% endfor %}{% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     {# Username or Email #}
     {% set field = form.username if user_manager.USER_ENABLE_USERNAME else form.email %}
     {% if user_manager.USER_ENABLE_REGISTER %}
@@ -28,7 +39,8 @@
         {{ render_field(form.retype_password, tabindex=240) }}
     {% endif %}
 
-    {% if user_manager.app.config['RECAPTCHA_PUBLIC_KEY'] %}
+    {# The form drops the captcha field when no reCAPTCHA keys are configured. #}
+    {% if form.recaptcha %}
         {{ render_field(form.recaptcha, tabindex=240) }}
     {% endif %}
 

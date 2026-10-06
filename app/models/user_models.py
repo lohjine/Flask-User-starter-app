@@ -274,6 +274,13 @@ class RegisterFormExtended(RegisterForm):
     recaptcha = RecaptchaField(validators=[
         Recaptcha(message="Please fill in the captcha")])
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Without keys the template cannot render the captcha, so a required
+        # captcha would silently fail every registration. Drop the field instead.
+        if not current_app.config.get('RECAPTCHA_PUBLIC_KEY'):
+            del self.recaptcha
+
 # Define the User profile form
 class UserProfileForm(FlaskForm):
     first_name = StringField('First name (optional)') #, validators=[validators.DataRequired('First name is required')])
